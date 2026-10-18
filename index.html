@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandeep — Data, Automation & BI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --radius:22px;
+    --radius-sm:14px;
+  }
+  /* ---- Neumorphic theme tokens ---- */
+  html[data-theme="dark"]{
+    --bg:#262B35;
+    --shadow-dark:#1B1F27;
+    --shadow-light:#333A46;
+    --text:#E9ECF1;
+    --text-dim:#99A2B2;
+    --accent:#6FD6C6;
+    --accent-ink:#0F2420;
+    --gold:#E3B577;
+  }
+  html[data-theme="light"]{
+    --bg:#E7ECF2;
+    --shadow-dark:#AFB9C8;
+    --shadow-light:#FFFFFF;
+    --text:#282D35;
+    --text-dim:#6A7280;
+    --accent:#2E8C7E;
+    --accent-ink:#F2FBF9;
+    --gold:#AD7B34;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.65;
+    transition:background .3s ease, color .3s ease;
+  }
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+
+  h1,h2,h3{
+    font-family:'Merriweather',serif;
+    font-weight:700;
+    letter-spacing:-0.2px;
+  }
+
+  /* ---- Neumorphic primitives ---- */
+  .neu-raised{
+    background:var(--bg);
+    border-radius:var(--radius);
+    box-shadow: 9px 9px 18px var(--shadow-dark), -9px -9px 18px var(--shadow-light);
+  }
+  .neu-raised-sm{
+    background:var(--bg);
+    border-radius:var(--radius-sm);
+    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  }
+  .neu-pressed{
+    background:var(--bg);
+    border-radius:var(--radius-sm);
+    box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+  }
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--bg);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;}
+  .logo{font-family:'Merriweather',serif;font-weight:700;font-size:19px;letter-spacing:0.2px;}
+  .logo span{color:var(--accent);}
+  .nav-right{display:flex;align-items:center;gap:30px;}
+  .navlinks{display:flex;gap:10px;font-size:13.5px;color:var(--text-dim);}
+  .navlinks a{padding:10px 16px;border-radius:12px;transition:all .2s ease;}
+  .navlinks a:hover{color:var(--text);box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);}
+
+  .theme-toggle{
+    width:52px;height:28px;border-radius:20px;
+    position:relative;cursor:pointer;
+    display:flex;align-items:center;
+    padding:0 3px;
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+  }
+  .theme-toggle .knob{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--bg);
+    color:var(--accent);
+    transition:transform .25s ease;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;
+    box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+  }
+  html[data-theme="light"] .theme-toggle .knob{transform:translateX(22px);}
+
+  /* HERO */
+  header.hero{padding:70px 0 60px;position:relative;overflow:hidden;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--accent);font-size:13px;letter-spacing:2px;text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:'';width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);}
+  h1{
+    font-size:clamp(30px,4.4vw,48px);
+    line-height:1.25;
+    max-width:820px;
+  }
+  h1 .accent{color:var(--accent);}
+  .lede{
+    color:var(--text-dim);
+    font-size:17px;
+    max-width:560px;
+    margin-top:22px;
+    font-family:'Inter',sans-serif;
+  }
+  .cta-row{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:14px 24px;
+    border-radius:16px;
+    transition:all .15s ease;
+    display:inline-block;
+    cursor:pointer;
+  }
+  .btn.primary{color:var(--accent);box-shadow: 7px 7px 14px var(--shadow-dark), -7px -7px 14px var(--shadow-light);}
+  .btn.primary:active{box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);}
+  .btn.ghost{color:var(--text-dim);box-shadow: 7px 7px 14px var(--shadow-dark), -7px -7px 14px var(--shadow-light);}
+  .btn.ghost:active{box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);}
+
+  /* PIPELINE SIGNATURE */
+  .pipeline{
+    margin-top:64px;
+    padding:30px 22px 36px;
+    overflow-x:auto;
+  }
+  .pipeline-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;
+    margin-bottom:24px;padding-left:4px;
+  }
+  .pipe-track{position:relative;display:flex;align-items:center;justify-content:space-between;min-width:640px;padding:0 4px;}
+  .pipe-line{
+    position:absolute;top:13px;left:22px;right:22px;height:4px;border-radius:4px;
+    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+  }
+  .pipe-node{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;flex:1;z-index:2;}
+  .dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);}
+  .dot::after{content:'';width:9px;height:9px;background:var(--accent);border-radius:50%;}
+  .pipe-node span{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dim);text-align:center;white-space:nowrap;}
+  .pulse{
+    position:absolute;top:11px;left:22px;width:8px;height:8px;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 10px var(--gold);
+    animation:travel 4.5s linear infinite;
+  }
+  @keyframes travel{
+    0%{left:22px;opacity:0;}
+    5%{opacity:1;}
+    95%{opacity:1;}
+    100%{left:calc(100% - 28px);opacity:0;}
+  }
+
+  /* SECTION HEADERS */
+  .section{padding:72px 0;}
+  .section-head{margin-bottom:44px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:27px;}
+  .section-head p.sub{color:var(--text-dim);margin-top:12px;max-width:620px;font-size:15px;}
+
+  /* PROJECT CARDS */
+  .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;}
+  .card{
+    padding:30px;
+    transition:transform .2s ease;
+  }
+  .card:hover{transform:translateY(-4px);}
+  .card-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;display:inline-block;
+  }
+  .card h3{font-size:18.5px;margin-bottom:14px;line-height:1.4;}
+  .card ul{list-style:none;color:var(--text-dim);font-size:14.5px;}
+  .card ul li{position:relative;padding-left:18px;margin-bottom:9px;}
+  .card ul li::before{content:'—';position:absolute;left:0;color:var(--accent);}
+  .card ul li b{color:var(--text);font-weight:600;}
+  .stack{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);
+    border-radius:20px;padding:5px 12px;
+    box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+  }
+
+  @media(max-width:760px){.projects{grid-template-columns:1fr;}}
+
+  /* FEATURED PROJECT (Healthcare Analytics) */
+  .featured{padding:34px;}
+  .featured-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+  .featured h3{font-size:22px;max-width:640px;line-height:1.4;}
+  .featured-sub{color:var(--text-dim);font-size:14.5px;margin-top:8px;max-width:560px;}
+  .featured-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:start;}
+  .gallery{display:flex;flex-direction:column;gap:16px;}
+  .gallery .neu-raised-sm{padding:10px;}
+  .gallery img{width:100%;display:block;border-radius:10px;}
+  .gallery-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .featured ul{list-style:none;color:var(--text-dim);font-size:14.5px;}
+  .featured ul li{position:relative;padding-left:20px;margin-bottom:13px;}
+  .featured ul li::before{content:'—';position:absolute;left:0;color:var(--accent);}
+  .featured ul li b{color:var(--text);font-weight:600;}
+  @media(max-width:820px){.featured-grid{grid-template-columns:1fr;}}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:280px 1fr;gap:44px;align-items:start;}
+  .about-photo{
+    padding:12px;
+  }
+  .about-photo img{width:100%;display:block;object-fit:cover;border-radius:16px;}
+  .about-name{font-size:23px;margin-top:20px;}
+  .about-role{
+    font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:12.5px;
+    margin-top:8px;line-height:1.6;
+  }
+  .about-text p{color:var(--text-dim);margin-bottom:16px;font-size:15px;}
+  .skills-block{margin-top:26px;padding:8px 22px;}
+  .skill-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--text-dim);padding:12px 0;}
+  .skill-row + .skill-row{box-shadow: 0 1px 0 0 var(--shadow-light), 0 -1px 0 0 var(--shadow-dark);}
+  .skill-row span:last-child{color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;}
+  @media(max-width:760px){.about-grid{grid-template-columns:1fr;}.about-photo{max-width:260px;}}
+
+  /* CONTACT */
+  .contact-box{
+    padding:54px;text-align:center;
+  }
+  .contact-box h2{font-size:25px;margin-bottom:14px;}
+  .contact-box p{color:var(--text-dim);max-width:440px;margin:0 auto 26px;font-family:'Inter',sans-serif;}
+
+  footer{padding:30px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-dim);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">Sandeep<span>.</span></div>
+    <div class="nav-right">
+      <div class="navlinks">
+        <a href="#work">Work</a>
+        <a href="#healthcare">Healthcare</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="theme-toggle" id="themeToggle" role="button" aria-label="Toggle light and dark theme">
+        <div class="knob">◐</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Technical Business Analyst</div>
+    <h1>I build the <span class="accent">pipelines</span> and <span class="accent">automations</span> that sit quietly behind good dashboards.</h1>
+    <p class="lede">SQL, Power BI, Python and a handful of open-source tools — connected end to end so data moves on its own, and reports stop being a weekly chore.</p>
+    <div class="cta-row">
+      <a href="#work" class="btn primary">See the work →</a>
+      <a href="#contact" class="btn ghost">Get in touch</a>
+    </div>
+
+    <div class="pipeline neu-raised">
+      <div class="pipeline-label">// a typical pipeline, end to end</div>
+      <div class="pipe-track">
+        <div class="pipe-line"></div>
+        <div class="pulse"></div>
+        <div class="pipe-node"><div class="dot"></div><span>SSMS</span></div>
+        <div class="pipe-node"><div class="dot"></div><span>Power BI</span></div>
+        <div class="pipe-node"><div class="dot"></div><span>Fabric</span></div>
+        <div class="pipe-node"><div class="dot"></div><span>Power Automate</span></div>
+        <div class="pipe-node"><div class="dot"></div><span>OneDrive</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Projects</div>
+      <h2>Four ways I've solved the same problem — getting the right data to the right person, on its own.</h2>
+    </div>
+
+    <div class="projects">
+
+      <div class="card neu-raised">
+        <span class="card-tag">Blog 01</span>
+        <h3>Built an end-to-end BI pipeline — from raw SQL to embedded dashboards</h3>
+        <ul>
+          <li>Pulled and queried source data in <b>SSMS</b></li>
+          <li>Cleaned, modeled, and transformed it in <b>Power BI Desktop</b> (Power Query + DAX)</li>
+          <li>Published the model to a <b>Microsoft Fabric</b> workspace for governed access</li>
+          <li>Embedded the dashboard directly into our internal software</li>
+          <li>Used <b>Power Automate</b> to push select tables into <b>OneDrive</b> for teams outside Power BI</li>
+        </ul>
+        <div class="stack">
+          <span class="chip">SSMS</span><span class="chip">Power BI</span><span class="chip">Fabric</span><span class="chip">Power Automate</span>
+        </div>
+      </div>
+
+      <div class="card neu-raised">
+        <span class="card-tag">Blog 02</span>
+        <h3>Automated repetitive reporting with Python</h3>
+        <ul>
+          <li>Used <b>Selenium WebDriver</b> to pull data from systems with no clean API</li>
+          <li>Built cleansing scripts to fix formatting and standardize recurring reports</li>
+          <li>Wrapped automations in <b>Django</b> or <b>Flask</b>, depending on what the business actually needed</li>
+          <li>Used <b>Matplotlib</b> for quick visual summaries where a table wasn't enough</li>
+        </ul>
+        <div class="stack">
+          <span class="chip">Python</span><span class="chip">Selenium</span><span class="chip">Django</span><span class="chip">Flask</span><span class="chip">Matplotlib</span>
+        </div>
+      </div>
+
+      <div class="card neu-raised">
+        <span class="card-tag">Blog 03</span>
+        <h3>Expanded the dashboard stack with Superset, Metabase & Docker</h3>
+        <ul>
+          <li>Connected <b>Apache Superset</b> for more flexible, SQL-driven exploration</li>
+          <li>Set up <b>Metabase</b> for teams that wanted self-service reporting without writing queries</li>
+          <li>Containerized the Metabase deployment with <b>Docker</b> for a portable, repeatable setup</li>
+          <li>Each team got the dashboarding tool that matched how they actually worked</li>
+        </ul>
+        <div class="stack">
+          <span class="chip">Apache Superset</span><span class="chip">Metabase</span><span class="chip">Docker</span>
+        </div>
+      </div>
+
+      <div class="card neu-raised">
+        <span class="card-tag">Blog 04</span>
+        <h3>Designed and delivered client websites with Wix Studio</h3>
+        <ul>
+          <li>Took on freelance web design work using <b>Wix Studio</b></li>
+          <li>Delivered fully responsive, client-ready sites without custom backend code</li>
+          <li>Handled the full loop — design, content structure, and publishing</li>
+          <li>Let clients focus on running their business while I handled the build and launch</li>
+        </ul>
+        <div class="stack">
+          <span class="chip">Wix Studio</span><span class="chip">Freelance</span><span class="chip">Client Sites</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="healthcare">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Featured Module</div>
+      <h2>Healthcare Analytics</h2>
+      <p class="sub">A denial-analysis reporting suite built for a healthcare billing team — turning raw claims data into a daily read on where revenue is leaking.</p>
+    </div>
+
+    <div class="featured neu-raised">
+      <div class="featured-top">
+        <div>
+          <span class="card-tag">Blog 05</span>
+          <h3>Denial Analysis Dashboard — claims, CPT &amp; payer-level breakdowns</h3>
+          <p class="featured-sub">Designed two linked dashboard views so the same denial data serves both daily operations and executive review.</p>
+        </div>
+      </div>
+
+      <div class="featured-grid">
+        <div class="gallery">
+          <div class="neu-raised-sm">
+            <img src="assets/denial-dashboard-1.png" alt="Denial Analysis Dashboard — KPI and trend view">
+          </div>
+          <div class="gallery-row">
+            <div class="neu-raised-sm">
+              <img src="assets/denial-dashboard-2.png" alt="Denial Analysis Dashboard — executive gauge view">
+            </div>
+            <div class="neu-raised-sm">
+              <img src="assets/denial-dashboard-cover.png" alt="Denial Analysis project cover">
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li>Built a <b>denial-tracking dashboard</b> for a healthcare billing client, covering claims, denial rate, charges and outstanding balance in one view</li>
+          <li>Broke denials down by <b>CAS code, CPT code, payer group, department and aging bucket</b> so the root cause is never more than one click away</li>
+          <li>Added <b>recovery rate, collection effectiveness and financial-risk gauges</b> to flag revenue leakage before it piles up</li>
+          <li>Designed a second, <b>executive-level gauge view</b> for a faster read against monthly targets</li>
+          <li>Delivered as a reusable template — swap the client filter and the whole report re-slices itself</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">About</div>
+      <h2>The short version</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <div class="about-photo neu-raised">
+          <img src="assets/profile.jpeg" alt="Sandeep">
+        </div>
+        <h3 class="about-name">Sandeep</h3>
+        <div class="about-role">Technical Business Analyst<br>SQL (SSMS) · Power BI · Excel · RPA</div>
+      </div>
+      <div>
+        <div class="about-text">
+          <p>I work at the point where raw data becomes something a business can actually act on — pulling it from SQL Server, shaping it in Power BI, and publishing it somewhere people can trust it.</p>
+          <p>Where a report is repetitive enough to automate, I automate it — usually in Python, wrapped in whatever framework fits the ask rather than the one I default to.</p>
+          <p>Outside the BI stack, I've containerized open-source dashboards with Docker, built denial-analysis reporting for healthcare billing, and taken on freelance web builds in Wix Studio for clients who just need a site that works.</p>
+        </div>
+        <div class="skills-block neu-pressed">
+          <div class="skill-row"><span>SQL / SSMS</span><span>Advanced</span></div>
+          <div class="skill-row"><span>Power BI / Fabric</span><span>Advanced</span></div>
+          <div class="skill-row"><span>Python Automation</span><span>Proficient</span></div>
+          <div class="skill-row"><span>Healthcare Analytics</span><span>Proficient</span></div>
+          <div class="skill-row"><span>Superset / Metabase</span><span>Proficient</span></div>
+          <div class="skill-row"><span>Docker</span><span>Working knowledge</span></div>
+          <div class="skill-row"><span>Wix Studio</span><span>Freelance</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact-box neu-raised">
+      <h2>Have a data or automation problem?</h2>
+      <p>Happy to talk pipelines, dashboards, repetitive reports that shouldn't be, or a freelance site build.</p>
+      <a href="mailto:your-email@example.com" class="btn primary">Email me →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">© 2026 Sandeep</span>
+    <span class="mono">Built with intent.</span>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    toggle.querySelector('.knob').textContent = theme === 'dark' ? '◐' : '☀';
+    try{ localStorage.setItem('theme', theme); }catch(e){}
+  }
+
+  (function initTheme(){
+    let saved;
+    try{ saved = localStorage.getItem('theme'); }catch(e){}
+    if(saved){
+      applyTheme(saved);
+    } else {
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      applyTheme(prefersLight ? 'light' : 'dark');
+    }
+  })();
+
+  toggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+</script>
+
+</body>
+</html>
